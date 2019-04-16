@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.pitang.desafio.api.model.service.CustomUserDetailService;
 
@@ -20,41 +21,41 @@ import com.pitang.desafio.api.model.service.CustomUserDetailService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
+  @Autowired
+  private CustomUserDetailService customUserDetailService;
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Override
+  @Bean
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
-        http.cors().and().csrf()//
-                .disable()//
-                .authorizeRequests()//
-                .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()//
-                .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_IN_URL).permitAll()//
-                .anyRequest().authenticated()//
-                .and()//
-                .addFilter(new JWTAuthenticatorFilter(authenticationManager()))//
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.cors().configurationSource(r -> new CorsConfiguration().applyPermitDefaultValues());
+    http.csrf()//
+        .disable()//
+        .authorizeRequests()//
+        .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()//
+        .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_IN_URL).permitAll()//
+        .anyRequest().authenticated()//
+        .and()//
+        .addFilter(new JWTAuthenticatorFilter(authenticationManager()))//
+        .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService)//
-                .passwordEncoder(new BCryptPasswordEncoder());
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(customUserDetailService)//
+        .passwordEncoder(new BCryptPasswordEncoder());
+  }
 
-    // @Autowired
-    // protected void configure(AuthenticationManagerBuilder auth) throws Exception
-    // {
-    // auth.inMemoryAuthentication()//
-    // .withUser("carlos").password("{noop}12345").roles("USER", "ADMIN")//
-    // .and()//
-    // .withUser("henrique").password("{noop}12345").roles("USER");
-    // }
+  // @Autowired
+  // protected void configure(AuthenticationManagerBuilder auth) throws Exception
+  // {
+  // auth.inMemoryAuthentication()//
+  // .withUser("carlos").password("{noop}12345").roles("USER", "ADMIN")//
+  // .and()//
+  // .withUser("henrique").password("{noop}12345").roles("USER");
+  // }
 }

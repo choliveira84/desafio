@@ -7,15 +7,20 @@ import java.util.concurrent.TimeUnit;
  */
 public class SecurityConstants {
 
-    static final String SECRET = "senhaparawebtoken";
-    static final String TOKEN_PREFIX = "Bearer ";
-    static final String HEADER_STRING = "Authorization";
-    static final String SIGN_UP_URL = "/signup";
-    static final String SIGN_IN_URL = "/signin";
-    // static final String SIGN_LOGIN_URL = "/login";
-    static final long EXPIRATION_TIME = 10000;
+  static final String SECRET = "senhaparawebtoken";
 
-    public static void main(String[] args) {
-        System.out.println(TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
-    }
+  static final String TOKEN_PREFIX = "Bearer ";
+
+  static final String HEADER_STRING = "Authorization";
+
+  static final String SIGN_UP_URL = "/signup";
+
+  static final String SIGN_IN_URL = "/signin";
+
+  // static final String SIGN_LOGIN_URL = "/login";
+  static final long EXPIRATION_TIME = 3600000;
+
+  public static void main(String[] args) {
+    System.out.println(TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS));
+  }
 }
