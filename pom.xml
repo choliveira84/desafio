@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.pitang.desafio</groupId>
 	<artifactId>api</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>Desafio Java</name>
 	<description>Desafio Java para consumo de API</description>
 
