@@ -3,12 +3,15 @@ package com.pitang.desafio.api.model.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,7 +45,6 @@ import lombok.ToString;
 @JsonIgnoreProperties(value = {
     "created_at", "last_login"
 }, allowGetters = true)
-
 public class Usuario implements Serializable, UserDetails {
 
   private static final long serialVersionUID = 1L;
@@ -82,6 +84,9 @@ public class Usuario implements Serializable, UserDetails {
   @CreatedDate
   @Column(name = "last_login", nullable = false, updatable = true)
   private LocalDateTime last_login;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  private List<Telefone> phones;
 
   @Override
   public String getUsername() {
